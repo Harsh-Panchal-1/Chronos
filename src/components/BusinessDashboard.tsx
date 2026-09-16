@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
-import { CrystalModel, TorusModel, SparkleModel } from './ThreeModels';
+import { CrystalModel, TorusModel, SparkleModel, GearKnotModel, GlassOrbModel } from './ThreeModels';
 import { BarChart3, Users, Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 const BusinessDashboard: React.FC = () => {
@@ -13,6 +13,8 @@ const BusinessDashboard: React.FC = () => {
   const yParallax1 = useTransform(scrollYProgress, [0, 1], [0, -150]);
   const yParallax2 = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const yParallax3 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const yParallax4 = useTransform(scrollYProgress, [0, 1], [0, 250]);
+  const yParallax5 = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
   const handleLaunch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,6 +54,24 @@ const BusinessDashboard: React.FC = () => {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 10]} intensity={1} />
           <SparkleModel />
+          <Environment preset="city" />
+        </Canvas>
+      </motion.div>
+
+      <motion.div style={{ position: 'absolute', top: '70%', left: '8%', width: '160px', height: '160px', zIndex: 0, opacity: 0.6, y: yParallax4 }}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} style={{ pointerEvents: 'none' }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 10]} intensity={1} />
+          <GearKnotModel />
+          <Environment preset="city" />
+        </Canvas>
+      </motion.div>
+
+      <motion.div style={{ position: 'absolute', bottom: '2%', right: '35%', width: '140px', height: '140px', zIndex: 0, opacity: 0.5, y: yParallax5 }}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} style={{ pointerEvents: 'none' }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 10]} intensity={1} />
+          <GlassOrbModel />
           <Environment preset="city" />
         </Canvas>
       </motion.div>

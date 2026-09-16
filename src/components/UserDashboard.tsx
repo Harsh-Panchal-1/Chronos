@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Coins, MapPin, MonitorPlay, Users, CheckCircle2, List, Map as MapIcon, ShoppingBag, Home, Gamepad2, Mic, Coffee, Dumbbell, Palette, Cake } from 'lucide-react';
+import { Coins, MonitorPlay, Users, CheckCircle2, List, Map as MapIcon, ShoppingBag, Home, Gamepad2, Mic, Coffee, Dumbbell, Palette, Cake } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
-import { GoldCoinModel, CrystalModel, TorusModel, SparkleModel } from './ThreeModels';
+import { GoldCoinModel, TorusModel, SparkleModel, GearKnotModel, GemModel } from './ThreeModels';
 
 // Fix Leaflet's default icon issue with React
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
@@ -178,6 +178,8 @@ const UserDashboard: React.FC = () => {
   const yParallax1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const yParallax2 = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const yParallax3 = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const yParallax4 = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const yParallax5 = useTransform(scrollYProgress, [0, 1], [0, -150]);
 
   return (
     <motion.div 
@@ -211,6 +213,24 @@ const UserDashboard: React.FC = () => {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 10]} intensity={1} />
           <SparkleModel />
+          <Environment preset="city" />
+        </Canvas>
+      </motion.div>
+
+      <motion.div style={{ position: 'absolute', top: '70%', left: '2%', width: '160px', height: '160px', zIndex: 0, opacity: 0.5, y: yParallax4 }}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} style={{ pointerEvents: 'none' }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 10]} intensity={1} />
+          <GearKnotModel />
+          <Environment preset="city" />
+        </Canvas>
+      </motion.div>
+
+      <motion.div style={{ position: 'absolute', bottom: '5%', left: '40%', width: '140px', height: '140px', zIndex: 0, opacity: 0.4, y: yParallax5 }}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} style={{ pointerEvents: 'none' }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 10]} intensity={1} />
+          <GemModel />
           <Environment preset="city" />
         </Canvas>
       </motion.div>

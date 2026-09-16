@@ -3,7 +3,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, Float, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
-import { MapPin, MonitorPlay, ShieldCheck, Coins } from 'lucide-react';
+import { MapPin, MonitorPlay, Coins } from 'lucide-react';
+import { GoldCoinModel, CrystalModel, TorusModel, GearKnotModel, GlassOrbModel, GemModel } from './ThreeModels';
 
 interface LandingPageProps {
   setView: (view: 'home' | 'user' | 'business') => void;
@@ -13,7 +14,7 @@ interface LandingPageProps {
 
 const HourglassModel = () => {
   const groupRef = useRef<THREE.Group>(null);
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.2;
     }
@@ -55,60 +56,6 @@ const HourglassModel = () => {
   );
 };
 
-const GoldCoinModel = () => {
-  const ref = useRef<THREE.Mesh>(null);
-  useFrame((_, delta) => {
-    if (ref.current) {
-      ref.current.rotation.x += delta * 0.5;
-      ref.current.rotation.y += delta * 1;
-    }
-  });
-  return (
-    <Float speed={3} rotationIntensity={2} floatIntensity={2}>
-      <mesh ref={ref} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[1.5, 1.5, 0.2, 32]} />
-        <meshStandardMaterial color="#F59E0B" metalness={0.7} roughness={0.2} />
-      </mesh>
-    </Float>
-  );
-};
-
-const CrystalModel = () => {
-  const ref = useRef<THREE.Mesh>(null);
-  useFrame((_, delta) => {
-    if (ref.current) {
-      ref.current.rotation.y += delta * 0.8;
-      ref.current.rotation.z += delta * 0.3;
-    }
-  });
-  return (
-    <Float speed={2} rotationIntensity={3} floatIntensity={3}>
-      <mesh ref={ref}>
-        <octahedronGeometry args={[1.2]} />
-        <meshPhysicalMaterial color="#3B82F6" transparent opacity={0.8} roughness={0} metalness={0.1} transmission={1} />
-      </mesh>
-    </Float>
-  );
-};
-
-const TorusModel = () => {
-  const ref = useRef<THREE.Mesh>(null);
-  useFrame((_, delta) => {
-    if (ref.current) {
-      ref.current.rotation.x += delta * 0.4;
-      ref.current.rotation.y += delta * 0.6;
-    }
-  });
-  return (
-    <Float speed={2} rotationIntensity={4} floatIntensity={2}>
-      <mesh ref={ref}>
-        <torusGeometry args={[1, 0.3, 16, 32]} />
-        <meshStandardMaterial color="#10B981" metalness={0.5} roughness={0.2} />
-      </mesh>
-    </Float>
-  );
-};
-
 // ----------------- MAIN COMPONENT -----------------
 
 const LandingPage: React.FC<LandingPageProps> = ({ setView }) => {
@@ -118,6 +65,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ setView }) => {
   const yParallax1 = useTransform(scrollYProgress, [0, 1], [0, -300]);
   const yParallax2 = useTransform(scrollYProgress, [0, 1], [0, 400]);
   const yParallax3 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const yParallax4 = useTransform(scrollYProgress, [0, 1], [0, 500]);
+  const yParallax5 = useTransform(scrollYProgress, [0, 1], [0, -400]);
+  const yParallax6 = useTransform(scrollYProgress, [0, 1], [0, 250]);
   
   const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
@@ -149,6 +99,33 @@ const LandingPage: React.FC<LandingPageProps> = ({ setView }) => {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 10]} intensity={1} />
           <TorusModel />
+          <Environment preset="city" />
+        </Canvas>
+      </motion.div>
+
+      <motion.div style={{ position: 'absolute', top: '80%', left: '40%', width: '180px', height: '180px', zIndex: 0, opacity: 0.5, y: yParallax4 }}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} style={{ pointerEvents: 'none' }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 10]} intensity={1} />
+          <GearKnotModel />
+          <Environment preset="city" />
+        </Canvas>
+      </motion.div>
+
+      <motion.div style={{ position: 'absolute', top: '190%', right: '15%', width: '250px', height: '250px', zIndex: 0, y: yParallax5 }}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} style={{ pointerEvents: 'none' }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 10]} intensity={1} />
+          <GlassOrbModel />
+          <Environment preset="city" />
+        </Canvas>
+      </motion.div>
+
+      <motion.div style={{ position: 'absolute', top: '230%', left: '5%', width: '150px', height: '150px', zIndex: 0, opacity: 0.7, y: yParallax6 }}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} style={{ pointerEvents: 'none' }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 10]} intensity={1} />
+          <GemModel />
           <Environment preset="city" />
         </Canvas>
       </motion.div>
