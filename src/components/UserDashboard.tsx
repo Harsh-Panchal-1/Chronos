@@ -313,66 +313,66 @@ const UserDashboard: React.FC = () => {
         </Canvas>
       </motion.div>
 
-      <div className="dashboard-header" style={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div className="dashboard-header" style={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '1.5rem', alignItems: 'stretch', width: '100%' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h2>Earner Dashboard</h2>
-            <p style={{ color: 'var(--text-muted)' }}>Find active tasks and earn TimeCoins.</p>
+            <h2 style={{ margin: '0 0 0.25rem 0', fontSize: '2rem' }}>Earner Dashboard</h2>
+            <p style={{ margin: 0, color: 'var(--text-muted)' }}>Find active tasks and earn TimeCoins.</p>
           </div>
           
           <div className="wallet-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--bg-primary)', padding: '0.75rem 1.5rem', borderRadius: '15px', border: '1px solid var(--accent-gold-light)' }}>
             <Coins color="var(--accent-gold)" size={28} />
             <div>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>TimeCoin Balance</div>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)' }}>{balance} TC</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)', lineHeight: 1 }}>{balance} TC</div>
             </div>
           </div>
         </div>
 
-        {/* --- TABS: TASKS vs REWARDS --- */}
-        <div style={{ display: 'flex', gap: '1rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem' }}>
-          <button 
-            onClick={() => setActiveTab('tasks')}
-            style={{
-              padding: '0.5rem 1rem',
-              background: 'transparent',
-              border: 'none',
-              fontSize: '1.1rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              color: activeTab === 'tasks' ? 'var(--accent-gold)' : 'var(--text-muted)',
-              borderBottom: activeTab === 'tasks' ? '3px solid var(--accent-gold)' : '3px solid transparent',
-              marginBottom: '-10px',
-              transition: 'all 0.2s'
-            }}
-          >
-            Available Tasks
-          </button>
-          <button 
-            onClick={() => setActiveTab('rewards')}
-            style={{
-              padding: '0.5rem 1rem',
-              background: 'transparent',
-              border: 'none',
-              fontSize: '1.1rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              color: activeTab === 'rewards' ? 'var(--accent-gold)' : 'var(--text-muted)',
-              borderBottom: activeTab === 'rewards' ? '3px solid var(--accent-gold)' : '3px solid transparent',
-              marginBottom: '-10px',
-              transition: 'all 0.2s',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
-            }}
-          >
-            <Gift size={20}/> Rewards Marketplace
-          </button>
-        </div>
-        
-        {activeTab === 'tasks' && (
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '1rem' }}>
-            <div className="view-toggle" style={{ display: 'flex', background: 'white', borderRadius: '12px', padding: '0.25rem', border: '1px solid var(--border-color)' }}>
+        {/* --- TABS & CONTROLS --- */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderBottom: '2px solid var(--border-color)' }}>
+          <div style={{ display: 'flex', gap: '2rem' }}>
+            <button 
+              onClick={() => setActiveTab('tasks')}
+              style={{
+                padding: '0.5rem 0',
+                background: 'transparent',
+                border: 'none',
+                fontSize: '1.1rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                color: activeTab === 'tasks' ? 'var(--accent-gold)' : 'var(--text-muted)',
+                borderBottom: activeTab === 'tasks' ? '3px solid var(--accent-gold)' : '3px solid transparent',
+                marginBottom: '-2px',
+                transition: 'all 0.2s'
+              }}
+            >
+              Available Tasks
+            </button>
+            <button 
+              onClick={() => setActiveTab('rewards')}
+              style={{
+                padding: '0.5rem 0',
+                background: 'transparent',
+                border: 'none',
+                fontSize: '1.1rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                color: activeTab === 'rewards' ? 'var(--accent-gold)' : 'var(--text-muted)',
+                borderBottom: activeTab === 'rewards' ? '3px solid var(--accent-gold)' : '3px solid transparent',
+                marginBottom: '-2px',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}
+            >
+              <Gift size={20}/> Rewards Marketplace
+            </button>
+          </div>
+
+          {activeTab === 'tasks' && (
+            <div className="view-toggle" style={{ display: 'flex', background: 'white', borderRadius: '12px', padding: '0.25rem', border: '1px solid var(--border-color)', marginBottom: '0.5rem' }}>
               <button 
                 onClick={() => setViewMode('list')}
                 style={{
@@ -406,8 +406,8 @@ const UserDashboard: React.FC = () => {
                 <MapIcon size={18} /> Map
               </button>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {activeTab === 'rewards' ? (
