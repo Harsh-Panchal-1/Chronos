@@ -343,7 +343,7 @@ const UserDashboard: React.FC = () => {
                     {accepted.includes(bounty.id) ? (
                       <span style={{display: 'flex', alignItems: 'center', gap: '4px'}}><CheckCircle2 size={16}/> Accepted</span>
                     ) : (
-                      'Accept Bounty'
+                      'Accept Task'
                     )}
                   </button>
                 </div>

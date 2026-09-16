@@ -217,7 +217,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setView }) => {
               <div style={{ display: 'flex', gap: '1.5rem' }}>
                 <div style={{ fontWeight: 800, fontSize: '1.5rem', color: 'var(--border-color)' }}>01</div>
                 <div>
-                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.5rem' }}>Accept a Geofenced Bounty</h4>
+                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.5rem' }}>Accept a Geofenced Task</h4>
                   <p style={{ color: 'var(--text-muted)' }}>Find an empty local cafe or real estate open house on the map that needs immediate footfall.</p>
                 </div>
               </div>
@@ -258,7 +258,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setView }) => {
                 <div style={{ fontWeight: 800, fontSize: '1.5rem', color: 'rgba(255,255,255,0.2)' }}>01</div>
                 <div>
                   <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.5rem', color: 'white' }}>Trigger the Algorithm</h4>
-                  <p style={{ color: 'rgba(255,255,255,0.7)' }}>Select a digital bounty like a new OTT series premiere or a multiplayer game needing server liquidity.</p>
+                  <p style={{ color: 'rgba(255,255,255,0.7)' }}>Select a digital task like a new OTT series premiere or a multiplayer game needing server liquidity.</p>
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1.5rem' }}>

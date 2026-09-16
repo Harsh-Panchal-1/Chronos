@@ -12,7 +12,7 @@ The platform operates on a dual-sided marketplace:
 
 ### 📍 The Physical Engine
 Experiential businesses (cafes, events, real estate) face a perishable inventory crisis. An empty seat represents a 100% loss of potential revenue and damages social proof.
-* **Geofenced Bounties:** Users accept bounties to occupy empty local spaces.
+* **Geofenced Tasks:** Users accept tasks to occupy empty local spaces.
 * **Verified Presence:** Secure QR check-ins and dwell-time monitoring.
 * **Result:** Guaranteed physical footfall and organic hype.
 
@@ -29,7 +29,7 @@ Content creators, OTT platforms, and game developers spend millions on marketing
 This frontend prototype was built to demonstrate the core aesthetic and functionality for pitch panels:
 - **Interactive 3D UI:** Custom 3D objects (Hourglass, Gold Coins, Torus) built with `Three.js` and `@react-three/fiber` that elegantly float, auto-rotate, and react to scrolling.
 - **Scroll-Triggered Parallax:** Elegant scroll animations and page transitions powered by `framer-motion`.
-- **Geographic Map View:** An interactive map view using `react-leaflet` to display physical bounties (mocked in Bangalore, India).
+- **Geographic Map View:** An interactive map view using `react-leaflet` to display physical tasks (mocked in Bangalore, India).
 - **Dual Dashboards:** Beautiful, minimalist Light-themed dashboards for both "Earners" and "Business Partners".
 
 ---

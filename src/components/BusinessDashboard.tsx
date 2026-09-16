@@ -176,7 +176,7 @@ const BusinessDashboard: React.FC = () => {
                 className="btn-primary" 
                 style={{ width: '100%', marginTop: '1rem', background: launched ? '#10B981' : 'var(--text-main)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
               >
-                {launched ? <><CheckCircle2 size={20} /> Campaign Launched!</> : 'Launch Campaign & Fund Bounty'}
+                {launched ? <><CheckCircle2 size={20} /> Campaign Launched!</> : 'Launch Campaign & Fund Task'}
               </button>
             </div>
           </form>
