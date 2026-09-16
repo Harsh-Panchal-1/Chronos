@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, Float, ContactShadows, PresentationControls } from '@react-three/drei';
+import { Environment, Float, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
 import { MapPin, MonitorPlay, ShieldCheck, Coins } from 'lucide-react';
 
@@ -195,24 +195,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ setView }) => {
           <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
             <ambientLight intensity={0.5} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-            <PresentationControls 
-              global 
-              config={{ mass: 2, tension: 500 }} 
-              snap={{ mass: 4, tension: 1500 }} 
-              rotation={[0, 0.3, 0]} 
-              polar={[-Math.PI / 3, Math.PI / 3]} 
-              azimuth={[-Math.PI / 1.4, Math.PI / 2]}
-            >
-              <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-                <HourglassModel />
-              </Float>
-            </PresentationControls>
+            <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+              <HourglassModel />
+            </Float>
             <ContactShadows position={[0, -3.5, 0]} opacity={0.4} scale={10} blur={2} far={4} />
             <Environment preset="city" />
           </Canvas>
-          <div style={{ position: 'absolute', bottom: '10%', left: '50%', transform: 'translateX(-50%)', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 600, opacity: 0.6, pointerEvents: 'none' }}>
-            [ Click & Drag to Rotate ]
-          </div>
         </motion.div>
       </section>
 

@@ -27,7 +27,7 @@ Content creators, OTT platforms, and game developers spend millions on marketing
 ## 💎 Features of this Prototype
 
 This frontend prototype was built to demonstrate the core aesthetic and functionality for pitch panels:
-- **Interactive 3D UI:** Custom 3D objects (Hourglass, Gold Coins, Torus) built with `Three.js` and `@react-three/fiber` that float and react to scrolling.
+- **Interactive 3D UI:** Custom 3D objects (Hourglass, Gold Coins, Torus) built with `Three.js` and `@react-three/fiber` that elegantly float, auto-rotate, and react to scrolling.
 - **Scroll-Triggered Parallax:** Elegant scroll animations and page transitions powered by `framer-motion`.
 - **Geographic Map View:** An interactive map view using `react-leaflet` to display physical bounties (mocked in Bangalore, India).
 - **Dual Dashboards:** Beautiful, minimalist Light-themed dashboards for both "Earners" and "Business Partners".
