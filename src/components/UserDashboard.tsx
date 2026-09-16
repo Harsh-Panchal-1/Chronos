@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Coins, MonitorPlay, Users, CheckCircle2, List, Map as MapIcon, ShoppingBag, Home, Gamepad2, Mic, Coffee, Dumbbell, Palette, Cake, BookOpen, GraduationCap, Building2, Ticket, Car, Music, Gift } from 'lucide-react';
+import { Coins, MonitorPlay, Users, CheckCircle2, List, Map as MapIcon, ShoppingBag, Home, Gamepad2, Mic, Coffee, Dumbbell, Palette, Cake, BookOpen, GraduationCap, Ticket, Car, Music, Gift } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
