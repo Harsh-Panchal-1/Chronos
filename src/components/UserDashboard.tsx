@@ -164,12 +164,28 @@ const UserDashboard: React.FC = () => {
   const [balance, setBalance] = useState(120);
   const [accepted, setAccepted] = useState<number[]>([]);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [verifyingBounty, setVerifyingBounty] = useState<typeof mockBounties[0] | null>(null);
+  const [verificationStep, setVerificationStep] = useState<'idle' | 'processing' | 'success'>('idle');
 
-  const handleAccept = (id: number, reward: number) => {
-    if (!accepted.includes(id)) {
-      setAccepted([...accepted, id]);
-      setBalance(prev => prev + reward);
+  const handleAcceptClick = (bounty: typeof mockBounties[0]) => {
+    if (!accepted.includes(bounty.id)) {
+      setVerifyingBounty(bounty);
+      setVerificationStep('idle');
     }
+  };
+
+  const handleConfirmVerification = () => {
+    setVerificationStep('processing');
+    setTimeout(() => {
+      setVerificationStep('success');
+      setTimeout(() => {
+        if (verifyingBounty) {
+          setAccepted(prev => [...prev, verifyingBounty.id]);
+          setBalance(prev => prev + verifyingBounty.reward);
+        }
+        setVerifyingBounty(null);
+      }, 1500);
+    }, 2000);
   };
 
   const physicalBounties = mockBounties.filter(b => b.type === 'physical' && b.location);
@@ -318,7 +334,7 @@ const UserDashboard: React.FC = () => {
                   </div>
                   <button 
                     className="btn-accept"
-                    onClick={() => handleAccept(bounty.id, bounty.reward)}
+                    onClick={() => handleAcceptClick(bounty)}
                     disabled={accepted.includes(bounty.id)}
                     style={{ 
                       backgroundColor: accepted.includes(bounty.id) ? '#10B981' : 'var(--text-main)'
@@ -391,7 +407,7 @@ const UserDashboard: React.FC = () => {
                             fontWeight: 'bold',
                             transition: 'all 0.2s'
                           }}
-                          onClick={() => handleAccept(bounty.id, bounty.reward)}
+                          onClick={() => handleAcceptClick(bounty)}
                           disabled={accepted.includes(bounty.id)}
                         >
                           {accepted.includes(bounty.id) ? 'Accepted' : 'Accept'}
@@ -402,6 +418,103 @@ const UserDashboard: React.FC = () => {
                 </Marker>
               ))}
             </MapContainer>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* ----- VERIFICATION MODAL ----- */}
+      <AnimatePresence>
+        {verifyingBounty && (
+          <motion.div 
+            className="verification-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed',
+              top: 0, left: 0, right: 0, bottom: 0,
+              background: 'rgba(255, 255, 255, 0.4)',
+              backdropFilter: 'blur(8px)',
+              zIndex: 99999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <motion.div 
+              className="verification-modal"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              style={{
+                background: 'white',
+                padding: '2rem',
+                borderRadius: '20px',
+                width: '90%',
+                maxWidth: '400px',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                border: '1px solid var(--border-color)',
+                textAlign: 'center'
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: 'var(--accent-gold)' }}>
+                {verifyingBounty.type === 'physical' ? <MapIcon size={40} /> : <MonitorPlay size={40} />}
+              </div>
+              <h3 style={{ marginBottom: '1rem', fontSize: '1.4rem' }}>{verifyingBounty.title}</h3>
+              
+              {verificationStep === 'idle' && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', lineHeight: '1.6' }}>
+                    {verifyingBounty.type === 'physical' 
+                      ? 'To start earning TimeCoins for this location, please scan the venue\'s unique Chronos QR Code to verify your presence.'
+                      : 'To start earning TimeCoins, please connect your platform ID so we can verify your engagement metrics.'}
+                  </p>
+                  <div style={{ display: 'flex', gap: '1rem' }}>
+                    <button 
+                      className="btn-secondary" 
+                      onClick={() => setVerifyingBounty(null)}
+                      style={{ flex: 1, padding: '0.8rem', borderRadius: '12px', border: '1px solid var(--border-color)', background: 'transparent', cursor: 'pointer', fontWeight: 'bold' }}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      className="btn-primary" 
+                      onClick={handleConfirmVerification}
+                      style={{ flex: 1, padding: '0.8rem', borderRadius: '12px', background: 'var(--text-main)', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
+                    >
+                      {verifyingBounty.type === 'physical' ? 'Scan QR Code' : 'Connect Account'}
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {verificationStep === 'processing' && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ padding: '2rem 0' }}>
+                  <motion.div 
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                    style={{ width: '40px', height: '40px', border: '4px solid #FEF3C7', borderTopColor: 'var(--accent-gold)', borderRadius: '50%', margin: '0 auto 1.5rem' }}
+                  />
+                  <p style={{ color: 'var(--text-main)', fontWeight: 600, fontSize: '1.1rem' }}>
+                    {verifyingBounty.type === 'physical' ? 'Verifying geo-location...' : 'Authenticating profile...'}
+                  </p>
+                </motion.div>
+              )}
+
+              {verificationStep === 'success' && (
+                <motion.div 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  style={{ padding: '2rem 0' }}
+                >
+                  <div style={{ color: '#10B981', marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                    <CheckCircle2 size={64} />
+                  </div>
+                  <h3 style={{ color: '#10B981', marginBottom: '0.5rem' }}>Verified!</h3>
+                  <p style={{ color: 'var(--text-muted)', fontWeight: 600 }}>+{verifyingBounty.reward} TC secured.</p>
+                </motion.div>
+              )}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
