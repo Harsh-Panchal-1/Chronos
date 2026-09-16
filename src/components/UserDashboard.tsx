@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Coins, MonitorPlay, Users, CheckCircle2, List, Map as MapIcon, ShoppingBag, Home, Gamepad2, Mic, Coffee, Dumbbell, Palette, Cake } from 'lucide-react';
+import { Coins, MonitorPlay, Users, CheckCircle2, List, Map as MapIcon, ShoppingBag, Home, Gamepad2, Mic, Coffee, Dumbbell, Palette, Cake, BookOpen, GraduationCap, Building2 } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -157,6 +157,50 @@ const mockBounties = [
     reward: 40,
     type: 'digital',
     icon: <Mic size={24} />
+  },
+  {
+    id: 13,
+    title: 'VIT FC Canteen Rush',
+    description: 'Occupy empty seats at the Food Court to drive early crowd momentum and social proof.',
+    reward: 50,
+    type: 'physical',
+    icon: <Coffee size={24} />,
+    location: { lat: 12.9450, lng: 77.6400 } // Placed in central view for prototype visibility
+  },
+  {
+    id: 14,
+    title: 'GDSC Tech Club Induction',
+    description: 'Attend the GDSC club orientation in the Main Auditorium to guarantee a full house.',
+    reward: 100,
+    type: 'physical',
+    icon: <Users size={24} />,
+    location: { lat: 12.9550, lng: 77.6600 }
+  },
+  {
+    id: 15,
+    title: 'Faculty AI/ML Guest Lecture',
+    description: 'Fill the empty front rows for the visiting professor\'s lecture at SJT building.',
+    reward: 80,
+    type: 'physical',
+    icon: <GraduationCap size={24} />,
+    location: { lat: 12.9400, lng: 77.6550 }
+  },
+  {
+    id: 16,
+    title: 'Library Study Vibe',
+    description: 'Sit in the Central Library reading hall to establish a focused study environment.',
+    reward: 70,
+    type: 'physical',
+    icon: <BookOpen size={24} />,
+    location: { lat: 12.9600, lng: 77.6450 }
+  },
+  {
+    id: 17,
+    title: 'Riviera Fest App Testing',
+    description: 'Download the new campus fest app and keep it open for 10 minutes for server load testing.',
+    reward: 45,
+    type: 'digital',
+    icon: <MonitorPlay size={24} />
   }
 ];
 
@@ -310,7 +354,7 @@ const UserDashboard: React.FC = () => {
             exit={{ opacity: 0, y: -10 }}
             className="bounty-grid"
           >
-            {mockBounties.map((bounty, index) => (
+            {[...mockBounties].reverse().map((bounty, index) => (
               <motion.div 
                 key={bounty.id}
                 className="bounty-card"
