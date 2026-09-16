@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Coins, MonitorPlay, Users, CheckCircle2, List, Map as MapIcon, ShoppingBag, Home, Gamepad2, Mic, Coffee, Dumbbell, Palette, Cake, BookOpen, GraduationCap, Building2 } from 'lucide-react';
+import { Coins, MonitorPlay, Users, CheckCircle2, List, Map as MapIcon, ShoppingBag, Home, Gamepad2, Mic, Coffee, Dumbbell, Palette, Cake, BookOpen, GraduationCap, Building2, Ticket, Car, Music, Gift } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -204,9 +204,20 @@ const mockBounties = [
   }
 ];
 
+const mockRewards = [
+  { id: 1, title: 'FC Meal Voucher', description: 'Redeem for one free meal at the Food Court.', cost: 200, icon: <Coffee size={24}/>, brand: 'Campus Canteen' },
+  { id: 2, title: 'Spotify Premium (1M)', description: 'Ad-free music streaming for a month.', cost: 1200, icon: <Music size={24}/>, brand: 'Spotify' },
+  { id: 3, title: 'Zomato Free Delivery', description: 'Free delivery on your next 3 orders.', cost: 300, icon: <ShoppingBag size={24}/>, brand: 'Zomato' },
+  { id: 4, title: 'Alumni Mentorship', description: '30-minute resume review with a top-tier alumni.', cost: 800, icon: <Users size={24}/>, brand: 'Chronos Exclusive' },
+  { id: 5, title: 'Tech Fest VIP Pass', description: 'Skip the lines at the pro-shows.', cost: 2500, icon: <Ticket size={24}/>, brand: 'Campus Fest' },
+  { id: 6, title: 'Uber 20% Off', description: 'Discount on your next ride to the railway station.', cost: 400, icon: <Car size={24}/>, brand: 'Uber' },
+];
+
 const UserDashboard: React.FC = () => {
   const [balance, setBalance] = useState(120);
   const [accepted, setAccepted] = useState<number[]>([]);
+  const [redeemed, setRedeemed] = useState<number[]>([]);
+  const [activeTab, setActiveTab] = useState<'tasks' | 'rewards'>('tasks');
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [verifyingBounty, setVerifyingBounty] = useState<typeof mockBounties[0] | null>(null);
   const [verificationStep, setVerificationStep] = useState<'idle' | 'processing' | 'success'>('idle');
@@ -230,6 +241,13 @@ const UserDashboard: React.FC = () => {
         setVerifyingBounty(null);
       }, 1500);
     }, 2000);
+  };
+
+  const handleRedeem = (rewardId: number, cost: number) => {
+    if (balance >= cost && !redeemed.includes(rewardId)) {
+      setBalance(prev => prev - cost);
+      setRedeemed(prev => [...prev, rewardId]);
+    }
   };
 
   const physicalBounties = mockBounties.filter(b => b.type === 'physical' && b.location);
@@ -295,60 +313,156 @@ const UserDashboard: React.FC = () => {
         </Canvas>
       </motion.div>
 
-      <div className="dashboard-header" style={{ position: 'relative', zIndex: 10 }}>
-        <div>
-          <h2>Earner Dashboard</h2>
-          <p style={{ color: 'var(--text-muted)' }}>Find active bounties and earn TimeCoins.</p>
-        </div>
-        
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <div className="view-toggle" style={{ display: 'flex', background: 'white', borderRadius: '12px', padding: '0.25rem', border: '1px solid var(--border-color)' }}>
-            <button 
-              onClick={() => setViewMode('list')}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background: viewMode === 'list' ? 'var(--bg-primary)' : 'transparent',
-                fontWeight: viewMode === 'list' ? 600 : 400,
-                color: viewMode === 'list' ? 'var(--text-main)' : 'var(--text-muted)'
-              }}
-            >
-              <List size={18} /> List
-            </button>
-            <button 
-              onClick={() => setViewMode('map')}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background: viewMode === 'map' ? 'var(--bg-primary)' : 'transparent',
-                fontWeight: viewMode === 'map' ? 600 : 400,
-                color: viewMode === 'map' ? 'var(--text-main)' : 'var(--text-muted)'
-              }}
-            >
-              <MapIcon size={18} /> Map
-            </button>
+      <div className="dashboard-header" style={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h2>Earner Dashboard</h2>
+            <p style={{ color: 'var(--text-muted)' }}>Find active tasks and earn TimeCoins.</p>
           </div>
-
-          <div className="wallet-card" style={{ padding: '1rem 1.5rem', gap: '1rem' }}>
-            <Coins size={28} color="var(--accent-gold)" />
+          
+          <div className="wallet-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--bg-primary)', padding: '0.75rem 1.5rem', borderRadius: '15px', border: '1px solid var(--accent-gold-light)' }}>
+            <Coins color="var(--accent-gold)" size={28} />
             <div>
-              <div className="wallet-label" style={{ fontSize: '0.75rem' }}>Balance</div>
-              <div className="wallet-amount" style={{ fontSize: '1.5rem' }}>{balance} TC</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>TimeCoin Balance</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)' }}>{balance} TC</div>
             </div>
           </div>
         </div>
+
+        {/* --- TABS: TASKS vs REWARDS --- */}
+        <div style={{ display: 'flex', gap: '1rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+          <button 
+            onClick={() => setActiveTab('tasks')}
+            style={{
+              padding: '0.5rem 1rem',
+              background: 'transparent',
+              border: 'none',
+              fontSize: '1.1rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              color: activeTab === 'tasks' ? 'var(--accent-gold)' : 'var(--text-muted)',
+              borderBottom: activeTab === 'tasks' ? '3px solid var(--accent-gold)' : '3px solid transparent',
+              marginBottom: '-10px',
+              transition: 'all 0.2s'
+            }}
+          >
+            Available Tasks
+          </button>
+          <button 
+            onClick={() => setActiveTab('rewards')}
+            style={{
+              padding: '0.5rem 1rem',
+              background: 'transparent',
+              border: 'none',
+              fontSize: '1.1rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              color: activeTab === 'rewards' ? 'var(--accent-gold)' : 'var(--text-muted)',
+              borderBottom: activeTab === 'rewards' ? '3px solid var(--accent-gold)' : '3px solid transparent',
+              marginBottom: '-10px',
+              transition: 'all 0.2s',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+          >
+            <Gift size={20}/> Rewards Marketplace
+          </button>
+        </div>
+        
+        {activeTab === 'tasks' && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '1rem' }}>
+            <div className="view-toggle" style={{ display: 'flex', background: 'white', borderRadius: '12px', padding: '0.25rem', border: '1px solid var(--border-color)' }}>
+              <button 
+                onClick={() => setViewMode('list')}
+                style={{
+                  padding: '0.5rem 1rem',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  background: viewMode === 'list' ? 'var(--bg-primary)' : 'transparent',
+                  fontWeight: viewMode === 'list' ? 600 : 400,
+                  color: viewMode === 'list' ? 'var(--text-main)' : 'var(--text-muted)',
+                  border: 'none', cursor: 'pointer'
+                }}
+              >
+                <List size={18} /> List
+              </button>
+              <button 
+                onClick={() => setViewMode('map')}
+                style={{
+                  padding: '0.5rem 1rem',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  background: viewMode === 'map' ? 'var(--bg-primary)' : 'transparent',
+                  fontWeight: viewMode === 'map' ? 600 : 400,
+                  color: viewMode === 'map' ? 'var(--text-main)' : 'var(--text-muted)',
+                  border: 'none', cursor: 'pointer'
+                }}
+              >
+                <MapIcon size={18} /> Map
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
-      <AnimatePresence mode="wait">
-        {viewMode === 'list' ? (
-          <motion.div 
-            key="list"
+      {activeTab === 'rewards' ? (
+        <motion.div 
+          key="rewards-view"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bounty-grid"
+          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}
+        >
+          {mockRewards.map((reward, index) => (
+            <motion.div 
+              key={reward.id}
+              className="bounty-card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
+              style={{ display: 'flex', flexDirection: 'column' }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <div style={{ background: 'var(--accent-gold-light)', padding: '0.5rem', borderRadius: '12px', color: 'var(--accent-gold)' }}>
+                  {reward.icon}
+                </div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  {reward.brand}
+                </div>
+              </div>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>{reward.title}</h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', flex: 1 }}>{reward.description}</p>
+              
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
+                <div style={{ fontWeight: 800, color: 'var(--accent-gold)', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  {reward.cost} TC
+                </div>
+                <button 
+                  className="btn-primary"
+                  onClick={() => handleRedeem(reward.id, reward.cost)}
+                  disabled={redeemed.includes(reward.id) || balance < reward.cost}
+                  style={{ 
+                    background: redeemed.includes(reward.id) ? '#10B981' : (balance < reward.cost ? 'var(--border-color)' : 'var(--text-main)'),
+                    color: balance < reward.cost && !redeemed.includes(reward.id) ? 'var(--text-muted)' : 'white',
+                    border: 'none', padding: '0.5rem 1rem', borderRadius: '8px', fontWeight: 'bold', cursor: balance < reward.cost ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  {redeemed.includes(reward.id) ? 'Redeemed' : (balance < reward.cost ? 'Need more TC' : 'Redeem')}
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      ) : (
+        <AnimatePresence mode="wait">
+          {viewMode === 'list' ? (
+            <motion.div 
+              key="list"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -464,7 +578,8 @@ const UserDashboard: React.FC = () => {
             </MapContainer>
           </motion.div>
         )}
-      </AnimatePresence>
+        </AnimatePresence>
+      )}
       
       {/* ----- VERIFICATION MODAL ----- */}
       <AnimatePresence>
